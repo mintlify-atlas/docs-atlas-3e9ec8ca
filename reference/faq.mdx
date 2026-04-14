@@ -1,0 +1,136 @@
+---
+title: "TecBooks FAQ: common questions answered about the platform"
+description: "Answers to the most common questions about registration, user accounts, the financial dashboard, forecasts, and the project evaluation simulator."
+---
+
+This page covers the most frequently asked questions about TecBooks. Questions are grouped by topic: registration flows, account management, the financial dashboard and its modules, the forecasts simulator, and the project evaluation simulator. If you prefer to browse the FAQ inside the application, use the in-app FAQ page.
+
+<Note>
+  TecBooks includes a built-in FAQ section accessible at the `/faq` route within the application. The in-app FAQ uses the same categories described on this page and is available to all authenticated users.
+</Note>
+
+## Register
+
+<AccordionGroup>
+  <Accordion title="How do I register my institution?">
+    Institution registration is the first step before any professor or student can use TecBooks. An institution admin submits a registration request at `/mxrep/registry/institution`. The request is reviewed by a super-admin, and once approved, your institution receives a unique slug used to access your portal at `/mxrep/<your-slug>`.
+
+    For a full walkthrough, see [Register your institution](/getting-started/register-institution).
+  </Accordion>
+
+  <Accordion title="How do I register as a professor?">
+    Professors register at `/mxrep/registry/professor` and select the institution they belong to. After submitting, the institution admin reviews the request and approves it before the professor can access classroom tools.
+
+    For a full walkthrough, see [Register as a professor](/getting-started/register-professor).
+  </Accordion>
+
+  <Accordion title="How do I register as a student?">
+    Students register at `/mxrep/registry/student` using an invitation or join code provided by their professor. Once registered, students can access their assigned classes and the financial dashboard.
+
+    For a full walkthrough, see [Register as a student](/getting-started/register-student).
+  </Accordion>
+</AccordionGroup>
+
+## Accounts
+
+<AccordionGroup>
+  <Accordion title="How do student accounts work?">
+    Student accounts are tied to a specific institution. After registering, students can join classes created by their professor, participate in financial analysis games, and use the financial dashboard and simulators independently. Students cannot manage other users or create classes.
+
+    See [User roles](/getting-started/roles) for a full comparison of what each role can do.
+  </Accordion>
+
+  <Accordion title="How do professor accounts work?">
+    Professor accounts are approved by the institution admin before they become active. Once approved, professors can create and manage classes, form student groups, and launch financial analysis games. Professors can also use the financial dashboard and simulators on their own.
+
+    See [User roles](/getting-started/roles) for a full comparison of what each role can do.
+  </Accordion>
+
+  <Accordion title="What do I do if I forgot my password?">
+    Use the **Forgot password** link on the login page at `/mxrep/<your-institution>`. Enter the email address associated with your account and follow the instructions sent to your inbox to reset your password.
+  </Accordion>
+</AccordionGroup>
+
+## Financial dashboard
+
+<AccordionGroup>
+  <Accordion title="What is the Overview?">
+    The Overview is the main landing screen of the financial dashboard at `/tecbooks/dashboard`. It presents a high-level summary of the uploaded company's financial position — including key figures from the income statement, balance sheet, and cash flows — so users can quickly assess overall financial performance before drilling into specific statements or health ratios.
+
+    See [Financial dashboard overview](/features/dashboard/overview) for details.
+  </Accordion>
+
+  <Accordion title="What financial statements are available?">
+    The financial dashboard generates three standard financial statements from the uploaded Excel workbook:
+
+    - **Income Statement** — shows revenues, expenses, and net income over the reporting period.
+    - **Balance Sheet** — presents assets, liabilities, and equity at a point in time.
+    - **Cash Flows** — breaks down cash movements into operating, investing, and financing activities.
+
+    All three statements are populated automatically when you upload the TecBooks Excel template. See [Financial statements](/features/dashboard/financial-statements) for more information.
+  </Accordion>
+
+  <Accordion title="What is Financial Health?">
+    Financial Health is a section of the dashboard that computes ratio-based indicators across three dimensions:
+
+    - **Liquidity** — measures the company's ability to meet short-term obligations (e.g., current ratio, quick ratio).
+    - **Profitability** — evaluates how efficiently the company generates profit relative to revenue, assets, or equity (e.g., gross margin, return on assets).
+    - **Efficiency** — assesses how well the company uses its assets to generate revenue (e.g., asset turnover, inventory turnover).
+
+    Ratios are calculated automatically from the uploaded data. See [Financial statements](/features/dashboard/financial-statements) for the underlying data requirements.
+  </Accordion>
+</AccordionGroup>
+
+## Forecasts
+
+<AccordionGroup>
+  <Accordion title="What is the Forecasts feature?">
+    Forecasts is a module within the financial dashboard that projects future values — such as revenue or cash flows — based on historical data from the uploaded spreadsheet. It lets students and professors explore different forward-looking scenarios using statistical models.
+
+    See [Forecasts](/features/dashboard/forecasts) for a full overview.
+  </Accordion>
+
+  <Accordion title="What statistical methods are available?">
+    The forecasts module supports multiple statistical methods for time-series projection. The available methods include moving averages, exponential smoothing, and linear regression, allowing users to select the approach that best fits the data's pattern and trend.
+
+    See [Forecasting methods](/reference/forecasting-methods) for a technical description of each method and the formulas used.
+  </Accordion>
+
+  <Accordion title="What options can I configure?">
+    When running a forecast, you can configure the forecast horizon (number of future periods to project), the statistical method to apply, and — depending on the method — parameters such as the smoothing factor or the moving average window size. These options let you tune the model to match the volatility and trend of your data.
+
+    See [Forecasts](/features/dashboard/forecasts) for a walkthrough of the configuration UI.
+  </Accordion>
+</AccordionGroup>
+
+## Project evaluation
+
+<AccordionGroup>
+  <Accordion title="What is the Project Evaluation simulator?">
+    Project Evaluation is a standalone simulator accessible at `/sims/project-evaluation`. It helps students and professors assess the financial viability of a capital investment project by computing standard investment appraisal metrics. Unlike the financial dashboard, it does not require an uploaded spreadsheet — you enter the project inputs directly in the simulator form.
+
+    See [Project evaluation](/features/simulators/project-evaluation) for a full walkthrough.
+  </Accordion>
+
+  <Accordion title="What inputs does it require?">
+    The simulator collects the key parameters of the investment project, including:
+
+    - **Initial investment** — the upfront capital cost of the project.
+    - **Expected cash flows** — the projected net cash inflows for each period of the project's life.
+    - **Discount rate** — the required rate of return used to calculate present values.
+    - **Project lifetime** — the number of periods over which the investment is evaluated.
+
+    All inputs are entered manually in the simulator form. No spreadsheet upload is needed.
+  </Accordion>
+
+  <Accordion title="What outputs does it compute?">
+    Given the inputs, the simulator calculates the following investment appraisal metrics:
+
+    - **Net Present Value (NPV)** — the sum of discounted cash flows minus the initial investment. A positive NPV indicates a value-creating project.
+    - **Internal Rate of Return (IRR)** — the discount rate at which NPV equals zero. Compare against your hurdle rate to assess viability.
+    - **Return on Investment (ROI)** — total net gain as a percentage of total costs, including the initial investment.
+    - **Break-even period** — the number of years required to recover the initial investment from accumulated net cash flows. Returns no result if break-even is not reached within the project lifetime.
+
+    See [Project evaluation](/features/simulators/project-evaluation) for more details.
+  </Accordion>
+</AccordionGroup>

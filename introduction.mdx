@@ -1,12 +1,12 @@
 ---
 title: "TecBooks: Financial education for the classroom"
-description: "TecBooks is a web-based financial and accounting education platform built for Tecnologico de Monterrey. Professors run simulations, students analyze real business data."
+description: "TecBooks is a financial education platform for Tecnologico de Monterrey where professors run classroom simulations and students analyze real business data."
 ---
 
 TecBooks is an interactive financial education platform designed for the R&EIT department at Tecnologico de Monterrey campus Querétaro. It gives professors the tools to organize classrooms and run financial analysis games, while students upload real business spreadsheets and explore income statements, balance sheets, cash flows, forecasts, and investment simulations — all in one place.
 
 <CardGroup cols={2}>
-  <Card title="Quick start" icon="rocket" href="/introduction">
+  <Card title="Quick start" icon="rocket" href="/getting-started/quickstart">
     Set up your institution, create your first class, and run a financial analysis in minutes.
   </Card>
   <Card title="User roles" icon="users" href="/getting-started/roles">
@@ -35,6 +35,14 @@ TecBooks brings together three interconnected modules under one platform:
     Professors create classes, form student groups, and launch financial analysis games. Students join, submit work, and review results — all within a structured classroom context.
   </Card>
 </CardGroup>
+
+## How it's organized
+
+TecBooks uses a multi-tenant model. Each institution has its own space accessed via a unique slug (`/mxrep/<your-institution>`). Within that space, admins manage professors and students, professors run classes and games, and students participate in learning activities.
+
+<Note>
+  TecBooks is designed for use within Tecnologico de Monterrey. Institution registration requires approval from a super-admin before professors and students can join.
+</Note>
 
 ## Next steps
 

@@ -1,0 +1,39 @@
+---
+title: "Financial Dashboard: analyze your business data"
+description: "The TecBooks Financial Dashboard lets you visualize key metrics, generate financial statements, and run forecasts from a single uploaded Excel workbook."
+---
+
+The Financial Dashboard is the core analytical workspace in TecBooks. Once you upload your business spreadsheet, it processes your data and gives you an instant view of your company's financial health — from top-line revenue and working capital to period-by-period income statements and forward-looking forecasts.
+
+<Note>
+  The dashboard requires an Excel workbook to be uploaded before it becomes accessible. If you navigate directly to the dashboard URL without uploading data first, TecBooks automatically redirects you to the home page. See [Upload your business spreadsheet](/features/dashboard/uploading-data) to get started.
+</Note>
+
+## Dashboard sections
+
+The dashboard is divided into three sections, each accessible from the left sidebar. All sections read from the same uploaded workbook, and all respond to the period selector that lets you filter data by month.
+
+<CardGroup cols={3}>
+  <Card title="Overview" icon="chart-pie" href="/features/dashboard/uploading-data">
+    A summary view showing lifetime sales, lifetime profit, and working capital at a glance, alongside a profitability distribution donut chart and a stacked area chart of sales by product or service over the last six months.
+  </Card>
+  <Card title="Financial statements" icon="file-invoice-dollar" href="/features/dashboard/financial-statements">
+    Period-by-period Income Statement, Balance Sheet, and Statement of Cash Flows — each generated from your uploaded data and exportable as a PDF report.
+  </Card>
+  <Card title="Forecasts" icon="chart-line" href="/features/dashboard/forecasts">
+    A multi-method forecasting view that applies statistical models to your revenue data, renders projected trends on an interactive graph, and ranks forecast methods in a leaderboard.
+  </Card>
+</CardGroup>
+
+## Overview section
+
+The **Overview** tab (`/tecbooks/overview`) is the default landing view of the dashboard. It renders three summary cards at the top of the screen:
+
+- **Lifetime Sales** — the sum of all revenue values across every month in your workbook, with a percentage change indicator for the selected period.
+- **Lifetime Profit** — the sum of all total-profit values from the Overview sheet, with a trend arrow showing whether the most recent period improved or declined.
+- **Working Capital** — a derived metric calculated from revenue, costs, and expenses, showing the current period's working capital alongside the change from the previous period.
+
+Below those cards, two charts give you a deeper read of your data:
+
+- **Distribution of Profitability** — a donut chart that breaks down how revenue is distributed across cost, expenses, and profit categories.
+- **Sales by Product/Service** — a stacked area chart showing the last six months of unit sales for each product or service defined in your Revenue sheet.

@@ -1,0 +1,155 @@
+---
+title: "Self-host TecBooks with Docker: a deployment guide"
+description: "Self-host TecBooks on any Linux server using Docker. The image uses a multi-stage build to compile the React app and serve it with nginx on port 80."
+---
+
+TecBooks ships as a Docker image using a two-stage build: a Node 20 Alpine container compiles the Vite/React application, and an nginx Alpine container serves the resulting static files. This means the final image carries no Node.js runtime or build tooling — only the compiled assets and nginx. You can run the container on any host that has Docker installed.
+
+## Prerequisites
+
+- Docker 24 or later installed on your server
+- Access to the TecBooks API backend (the `VITE_API_BASE_URL` must be reachable from your users' browsers, not just from the Docker host)
+- Git to clone the repository
+
+## Environment variables
+
+TecBooks reads configuration from environment variables at **build time** via Vite. Because Vite inlines these values into the compiled JavaScript bundle, you must pass them as Docker build arguments — not at container runtime.
+
+<Warning>
+  Environment variables prefixed with `VITE_` are embedded in the compiled bundle and become visible in browser DevTools. Do not use this mechanism for secrets such as private API keys or credentials. The `VITE_API_BASE_URL` value is a public endpoint URL and is safe to include.
+</Warning>
+
+<ParamField path="VITE_API_BASE_URL" type="string" required>
+  Base URL for the TecBooks REST API, including the path prefix. Passed as a Docker build argument (`--build-arg`).
+
+  Example: `http://localhost:3000/tecbooks`
+</ParamField>
+
+<ParamField path="VITE_APP_ENV" type="string">
+  Application environment label. Accepted values are `development` and `production`. Used to toggle development-specific behaviour in the frontend.
+
+  Default: `development`
+</ParamField>
+
+## Deployment workflow
+
+<Steps>
+  <Step title="Clone the repository">
+    Clone the TecBooks source code and navigate into the project directory.
+
+    ```bash
+    git clone https://github.com/famchiyaque/TecBooks_V2.git
+    cd TecBooks_V2
+    ```
+  </Step>
+
+  <Step title="Configure environment">
+    Copy the example environment file and fill in your values. The variables in `.env` are used for local development only — the Docker build reads them through `--build-arg` in the next step.
+
+    ```bash
+    cp .env.example .env
+    ```
+
+    Edit `.env` with your actual API URL:
+
+    ```bash .env
+    VITE_API_BASE_URL=https://api.yourdomain.com/tecbooks
+    VITE_APP_ENV=production
+    ```
+
+    <Note>
+      The `.dockerignore` file excludes `.env` and all other `.env.*` files from the Docker build context. Variables are passed to the build explicitly using `--build-arg`, not by copying `.env` into the image.
+    </Note>
+  </Step>
+
+  <Step title="Build the Docker image">
+    Build the image and pass your API base URL as a build argument. The builder stage runs `npm ci --include=dev` to install all dependencies (including devDependencies required by Vite), then runs `npm run build` (`vite build`) to compile the app into the `dist/` directory. The production stage copies that output into the nginx HTML root.
+
+    <Note>
+      The Dockerfile declares only `VITE_API_BASE_URL` as an `ARG`. The `VITE_APP_ENV` variable is read from the local `.env` file at build time when running without Docker, or must be added to the Dockerfile as an additional `ARG` if you need to set it in a container build.
+    </Note>
+
+    <CodeGroup>
+
+    ```bash Production build
+    docker build \
+      --build-arg VITE_API_BASE_URL=https://api.yourdomain.com/tecbooks \
+      -t tecbooks:latest .
+    ```
+
+    </CodeGroup>
+  </Step>
+
+  <Step title="Run the container">
+    Start the container. nginx listens on port 80 inside the container. Map it to the host port of your choice.
+
+    <CodeGroup>
+
+    ```bash Standard (port 80)
+    docker run -d \
+      --name tecbooks \
+      -p 80:80 \
+      tecbooks:latest
+    ```
+
+    ```bash Custom host port
+    docker run -d \
+      --name tecbooks \
+      -p 8080:80 \
+      tecbooks:latest
+    ```
+
+    ```bash With restart policy
+    docker run -d \
+      --name tecbooks \
+      -p 80:80 \
+      --restart unless-stopped \
+      tecbooks:latest
+    ```
+
+    </CodeGroup>
+
+    Once the container is running, open `http://your-server-ip` (or the port you mapped) in a browser. The TecBooks home page should load.
+  </Step>
+</Steps>
+
+## Local development (without Docker)
+
+The npm scripts in `package.json` support a standard Vite development workflow. The dev server starts on port **8322** as configured in `vite.config.js`.
+
+<CodeGroup>
+
+```bash Start dev server
+npm run dev
+# Starts vite on http://localhost:8322
+```
+
+```bash Production build
+npm run build
+# Runs: vite build
+# Output written to dist/
+```
+
+```bash Preview production build
+npm run preview
+# Serves the dist/ output locally with vite preview
+```
+
+</CodeGroup>
+
+For local development, set your variables in `.env` (copied from `.env.example`). Vite automatically loads `.env` files in non-Docker environments.
+
+## How the multi-stage build works
+
+The Dockerfile uses two `FROM` instructions to keep the final image small:
+
+| Stage | Base image | What it does |
+|---|---|---|
+| `builder` | `node:20-alpine` | Installs all npm dependencies and runs `vite build`. Output lands in `/app/dist`. |
+| Production | `nginx:alpine` | Copies `/app/dist` from the builder into `/usr/share/nginx/html` and starts nginx. |
+
+The `node_modules`, source files, and all build tooling are discarded after the builder stage. Only the compiled static assets are shipped in the final image.
+
+<Tip>
+  If you need to serve TecBooks behind a reverse proxy (nginx, Caddy, Traefik), set the `X-Forwarded-For` and `X-Real-IP` headers on the proxy and point it to the container's mapped port. No changes to the TecBooks Docker image are required.
+</Tip>

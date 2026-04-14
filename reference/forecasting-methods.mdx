@@ -1,0 +1,142 @@
+---
+title: "Statistical forecasting methods in TecBooks"
+description: "Reference for all forecasting models available in TecBooks — SLR, DLR, SMA, DMA, SES, DES, and Winter's — with configurable parameters and enablement rules."
+---
+
+TecBooks includes statistical forecasting in two places: the standalone **Forecaster** simulator, where you can load or generate any time-series data and project it forward, and the **Forecasts** view inside the dashboard, which uses your uploaded business data as the source series. Both surfaces expose the same set of models and share the same parameter controls.
+
+<Note>
+You can select multiple forecasting methods simultaneously to compare their projections side-by-side on the same chart. The parameter controls (compound, alpha, beta, gamma) apply to all active methods that use them.
+</Note>
+
+## Data intervals
+
+The interval determines how data points are spaced in time. Available options are `daily`, `weekly`, `monthly`, and `yearly`. When data is uploaded, the interval is auto-detected; you can then switch to any interval that is equal to or less frequent than the detected one.
+
+## Methods
+
+<AccordionGroup>
+
+  <Accordion title="Simple Linear Regression">
+
+Fits a straight line through all historical data points using ordinary least squares and extrapolates that line into the future.
+
+**When to use:** data with a consistent upward or downward trend and no seasonal pattern.
+
+**Parameters:** none. Simple Linear Regression has no configurable parameters; selecting it enables no additional controls.
+
+  </Accordion>
+
+  <Accordion title="Double Linear Regression">
+
+A two-stage regression approach that fits a second linear regression to the trend component of the first fit, capturing more complex trend curvature that a single straight line cannot represent.
+
+**When to use:** data whose trend changes direction or accelerates over time, where Simple Linear Regression produces a visibly poor fit.
+
+**Parameters:** none. Like Simple Linear Regression, this method requires no tuning.
+
+  </Accordion>
+
+  <Accordion title="Simple Moving Average">
+
+Forecasts each future point as the arithmetic mean of the most recent `compound` data points.
+
+**When to use:** relatively stable data with short-term noise you want to smooth out.
+
+**Parameters**
+
+| Parameter | Description |
+|---|---|
+| `compound` | Window size (number of past periods to average). Enabled whenever Simple Moving Average or Double Moving Average is active. |
+
+**Compound range**
+
+The allowed range for `compound` is calculated from the number of available data points:
+
+```text
+maxCompound = max(3, min(floor(dataPoints × 0.7), 100))
+min = 3
+max = maxCompound
+```
+
+A window of at least 3 is always required. The upper bound caps at 70 % of available data points or 100, whichever is smaller.
+
+  </Accordion>
+
+  <Accordion title="Double Moving Average">
+
+Applies moving average smoothing twice — once to the raw series and once to the result — to capture linear trends that simple moving average misses.
+
+**When to use:** data with a clear trend component where Simple Moving Average consistently lags.
+
+**Parameters**
+
+| Parameter | Description |
+|---|---|
+| `compound` | Window size used for both passes. Uses the same range formula as Simple Moving Average. |
+
+The `compound` control is enabled whenever either Simple Moving Average or Double Moving Average is in the active methods list.
+
+  </Accordion>
+
+  <Accordion title="Simple Exponential Smoothing">
+
+Produces forecasts as a weighted average of all past observations, with exponentially decreasing weights assigned to older data.
+
+**When to use:** data with no significant trend or seasonal pattern.
+
+**Parameters**
+
+| Parameter | Description |
+|---|---|
+| `alpha` | Smoothing factor for the level component. Range: `0 < α < 1`. A higher value gives more weight to recent observations; a lower value produces a smoother, slower-reacting forecast. |
+
+  </Accordion>
+
+  <Accordion title="Double Exponential Smoothing">
+
+Extends simple exponential smoothing by adding a second smoothing equation for the trend component (also called Holt's linear method).
+
+**When to use:** data with a trend but no seasonal pattern.
+
+**Parameters**
+
+| Parameter | Description |
+|---|---|
+| `alpha` | Smoothing factor for the level component (`0 < α < 1`). |
+| `beta` | Smoothing factor for the trend component (`0 < β < 1`). A higher value makes the trend estimate react faster to recent changes. |
+
+  </Accordion>
+
+  <Accordion title="Winter's (Triple Exponential Smoothing)">
+
+Adds a third smoothing equation for seasonality on top of Holt's double smoothing. Also known as the Holt-Winters method.
+
+**When to use:** data with both a trend and a repeating seasonal pattern.
+
+<Tip>
+If your data shows regular peaks or troughs that repeat on a fixed cycle (e.g. holiday sales spikes every December, or quarterly billing cycles), Winter's method is the best choice. It is the only method that explicitly models seasonal variation.
+</Tip>
+
+**Parameters**
+
+| Parameter | Description |
+|---|---|
+| `alpha` | Smoothing factor for the level component (`0 < α < 1`). |
+| `beta` | Smoothing factor for the trend component (`0 < β < 1`). |
+| `gamma` | Smoothing factor for the seasonal component (`0 < γ < 1`). Only active when Winter's is selected. A higher value makes seasonal indices update faster. |
+
+  </Accordion>
+
+</AccordionGroup>
+
+## Parameter enablement reference
+
+The table below summarizes which UI controls become active based on your selected methods. Controls remain disabled (grayed out) when none of the active methods require them.
+
+| Control | Enabled when any active method is… |
+|---|---|
+| `compound` | Simple Moving Average or Double Moving Average |
+| `alpha` | Simple Exponential Smoothing, Double Exponential Smoothing, or Winter's |
+| `beta` | Double Exponential Smoothing or Winter's |
+| `gamma` | Winter's |

@@ -1,0 +1,53 @@
+---
+title: "Manage students at your institution"
+description: "View your institution's full student roster, inspect individual student accounts, and remove students who should no longer have access to your institution."
+---
+
+The Students section of the admin panel gives you a complete view of every student registered under your institution. Unlike professors, students are not added through an admin invitation — they self-register using your institution's slug. Your role as admin is to monitor the roster and act on individual accounts when needed.
+
+<Tip>
+  Share your institution's registration page URL with students so they can sign up independently. Students register at the institution's public-facing registration page, which is identified by your institution's unique slug. You do not need to manually create student accounts.
+</Tip>
+
+## Viewing the student roster
+
+Navigate to **Students** at `/mxrep/<slug>/admin-panel/manage-students` to see all enrolled students in a paginated table. Each row displays:
+
+- **Name** — the student's first and last names
+- **Email** — their registered email address
+- **Department** — the department they belong to, if set
+- **Role** — displayed as a badge (always `student`)
+- **Account status** — either **Active** or **Setup Required**
+
+The table shows 15 students per page. Use the pagination controls at the bottom to move between pages when your roster is large.
+
+## Common admin tasks for students
+
+<Steps>
+  <Step title="Locate a student">
+    Open the Students page at `/mxrep/<slug>/admin-panel/manage-students`. Browse the table or use pagination to find the student you are looking for. Click any row to open that student's detail page.
+  </Step>
+  <Step title="Review the student's account details">
+    The student detail page at `/mxrep/<slug>/admin-panel/manage-students/<studentId>` shows their full name, email, department, role, account status, and the date their account was created.
+
+    An **Account Status** of **Setup Required** means the student has registered but has not yet configured their password. They will not be able to log in until setup is complete.
+  </Step>
+  <Step title="Remove a student if necessary">
+    If a student should no longer have access to your institution — for example, if they have left the program — click **Remove** on their detail page. A confirmation prompt will appear before the action is carried out. Removal is permanent and cannot be undone from the admin panel.
+  </Step>
+</Steps>
+
+<Warning>
+  Removing a student is irreversible. Once removed, the student's account is disassociated from your institution and they lose access immediately. There is no undo option — if a student is removed by mistake, they must re-register from your institution's registration page.
+</Warning>
+
+## How student management differs from professor management
+
+Students and professors follow different onboarding paths, which affects how you interact with them as an admin:
+
+| | Professors | Students |
+|---|---|---|
+| **Onboarding** | Admin-initiated invitation | Self-registration using institution slug |
+| **Approval required** | Yes — admin reviews and approves each request via the inbox | No — students appear in the roster automatically after registering |
+| **Removal** | Not available from the admin panel in the current version | Available from the student detail page |
+| **Permission levels** | Can be granted admin privileges by an institution admin | Standard student role only |

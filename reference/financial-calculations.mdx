@@ -1,0 +1,185 @@
+---
+title: "Financial formulas used in TecBooks"
+description: "Exact formulas TecBooks uses to compute income statement figures, net present value, internal rate of return, ROI, and break-even period from uploaded data."
+---
+
+TecBooks computes every figure shown in the dashboard and the Investment Simulator from first principles using the values parsed from your uploaded workbook. This page documents each formula exactly as it is implemented in the source code, so you can verify, reproduce, or audit any result independently.
+
+<AccordionGroup>
+
+  <Accordion title="Income statement">
+
+Income statement figures are calculated monthly by `getStatements` in `processExcel.js`. All input values are converted to absolute (positive) numbers before any arithmetic is applied.
+
+**Inputs per month** (sourced from the Overview sheet)
+
+| Variable | Source column |
+|---|---|
+| `revenue` | `Revenue` column |
+| `costs` | `Costs` column |
+| `expenses` | `Expenses` column |
+| `dep` | `Depreciation` column |
+
+**Derived values**
+
+```text
+gross      = revenue - costs
+totalOp    = expenses + dep
+operating  = gross - expenses - dep    (equivalent to gross - totalOp)
+net        = operating
+```
+
+`gross` is the gross profit after direct costs. `totalOp` is the sum of all operating charges. `operating` (and `net`) is the result after subtracting both expenses and depreciation from gross profit.
+
+All output values are rounded to zero decimal places (`.toFixed(0)`).
+
+  </Accordion>
+
+  <Accordion title="Cashflows">
+
+Cashflows are constructed period-by-period before being passed to NPV, IRR, ROI, and break-even functions.
+
+```text
+cashflow[0] = inflow[0] - outflow[0] - initialInvestment
+cashflow[t] = inflow[t] - outflow[t]    (for t > 0)
+```
+
+The initial investment is only subtracted from the first period's cashflow.
+
+  </Accordion>
+
+  <Accordion title="Net Present Value (NPV)">
+
+Implemented in `getNPV` in `Calculators.js`.
+
+```js
+export function getNPV(lifetime, cashflows, discountRate) {
+    let npv = 0
+    for (let i = 0; i < lifetime; i++) {
+        npv += (cashflows[i]) / (1 + (discountRate / 100)) ** i
+    }
+    return npv.toFixed(2)
+}
+```
+
+**Formula**
+
+```text
+NPV = Σ  cashflow[t] / (1 + r)^t     for t = 0 to lifetime − 1
+```
+
+where `r = discountRate / 100`.
+
+The discount rate is passed as a percentage (e.g. `10` for 10 %). Period 0 is not discounted because `(1 + r)^0 = 1`. The result is rounded to two decimal places.
+
+  </Accordion>
+
+  <Accordion title="Internal Rate of Return (IRR)">
+
+Implemented in `getIRR` in `Calculators.js`. IRR is found by bisection search — not by a closed-form formula.
+
+```js
+export function getIRR(lifetime, inflows, outflows, initialInv, precomputedNPV) {
+    let lowRate = 0;
+    let highRate = 100;
+    let irr = 0;
+    let iterations = 1000;
+    const tolerance = 0.01;
+    // ...
+}
+```
+
+**Algorithm**
+
+1. If `|precomputedNPV| < 0.01`, return `0` immediately (NPV is already at break-even).
+2. Set the search range based on the sign of the precomputed NPV:
+   - NPV > 0 → search `[0, 200]`
+   - NPV < 0 → search `[−100, 0]`
+3. Run up to 1 000 bisection iterations. At each step evaluate:
+
+```text
+NPV(rate) = Σ (inflow[t] - outflow[t]) / (1 + rate/100)^t  −  initialInvestment
+            for t = 0 to lifetime − 1
+```
+
+4. If `|NPV(guessRate)| < 0.01`, accept `guessRate` as IRR and stop.
+5. If the loop exhausts all iterations without converging, return `highRate` as a fallback.
+
+The result is rounded to one decimal place.
+
+  </Accordion>
+
+  <Accordion title="Return on Investment (ROI)">
+
+Implemented in `getROI` in `Calculators.js`.
+
+```js
+export function getROI(inflows, outflows, initialInv) {
+    const benefits = inflows.reduce((prev, curr) => prev + curr, 0)
+    const costs = outflows.reduce((prev, curr) => prev + curr, 0) + initialInv
+    const roi = ((benefits - costs) / costs) * 100
+    return parseFloat(roi.toFixed(2))
+}
+```
+
+**Formula**
+
+```text
+totalBenefits = Σ inflow[t]    for all t
+totalCosts    = Σ outflow[t] + initialInvestment
+
+ROI = ((totalBenefits − totalCosts) / totalCosts) × 100
+```
+
+ROI is expressed as a percentage and rounded to two decimal places. A positive ROI means total inflows exceed total costs (including the initial investment); a negative ROI means the project does not recover its costs.
+
+  </Accordion>
+
+  <Accordion title="Break-even period">
+
+Implemented in `getBreakEven` in `Calculators.js`.
+
+```js
+export function getBreakEven(lifetime, inflows, outflows, cashflows, initialInv) {
+    if (cashflows[0] >= 0) {
+        return ((outflows[0] + initialInv) / inflows[0]).toFixed(1)
+    }
+
+    let accumulated = 0
+    for (let i = 0; i < lifetime; i++) {
+        accumulated += cashflows[i]
+        if (accumulated >= 0) {
+            return (i + Math.abs(outflows[i - 1] / inflows[i])).toFixed(1)
+        }
+    }
+    return null
+}
+```
+
+**Algorithm**
+
+There are two cases:
+
+**Case 1 — first-period cashflow is non-negative** (`cashflow[0] >= 0`):
+
+```text
+breakEven = (outflow[0] + initialInvestment) / inflow[0]
+```
+
+**Case 2 — first-period cashflow is negative**:
+
+Accumulate cashflows period by period. At the first period `t` where the running total is ≥ 0:
+
+```text
+breakEven = t + | outflow[t−1] / inflow[t] |
+```
+
+The fractional part approximates how far into period `t` the break-even point falls.
+
+If accumulated cashflows never reach zero within `lifetime` periods, the function returns `null` (break-even not reached).
+
+The result is rounded to one decimal place.
+
+  </Accordion>
+
+</AccordionGroup>

@@ -1,0 +1,115 @@
+{
+  "projectType": "saas",
+  "projectName": "TecBooks",
+  "projectDescription": "A financial and accounting educational web platform for Tecnologico de Monterrey that enables professors to run classroom simulations while students analyze real business data through interactive dashboards.",
+  "theme": "almond",
+  "primaryColor": "#f1d262",
+  "lightColor": "#7c6c34",
+  "darkColor": "#19160b",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Getting Started",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["introduction", "getting-started/quickstart", "getting-started/roles"]
+          },
+          {
+            "group": "Account Setup",
+            "pages": [
+              "getting-started/register-institution",
+              "getting-started/register-professor",
+              "getting-started/register-student"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Features",
+        "groups": [
+          {
+            "group": "Financial Dashboard",
+            "pages": [
+              "features/dashboard/overview",
+              "features/dashboard/uploading-data",
+              "features/dashboard/financial-statements",
+              "features/dashboard/forecasts"
+            ]
+          },
+          {
+            "group": "Simulators",
+            "pages": [
+              "features/simulators/sales-forecasting",
+              "features/simulators/project-evaluation"
+            ]
+          },
+          {
+            "group": "Classroom Management",
+            "pages": [
+              "features/classroom/managing-classes",
+              "features/classroom/creating-games",
+              "features/classroom/student-experience"
+            ]
+          },
+          {
+            "group": "Administration",
+            "pages": [
+              "features/admin/institution-overview",
+              "features/admin/managing-professors",
+              "features/admin/managing-students"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Reference",
+        "groups": [
+          {
+            "group": "Data & Calculations",
+            "pages": [
+              "reference/excel-template",
+              "reference/financial-calculations",
+              "reference/forecasting-methods"
+            ]
+          },
+          {
+            "group": "Deployment",
+            "pages": [
+              "reference/deployment",
+              "reference/faq"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Excel-based financial data upload and parsing (Overview, Revenue, Costs, Expenses, Accounts sheets)",
+    "Interactive financial dashboard with income statements, balance sheets, and cash flow views",
+    "Revenue forecasting with multiple statistical methods (Simple/Double Moving Average, Exponential Smoothing, Winter's method, Linear Regression)",
+    "Project evaluation simulator computing NPV, IRR, ROI, and break-even",
+    "Multi-role platform: students, professors, institution admins, and super-admins",
+    "Classroom game mechanics allowing professors to create and manage financial analysis games",
+    "Institution registration and multi-tenant management via institution slug routing",
+    "PDF export for financial statements using jsPDF and jsPDF-autotable"
+  ],
+  "publicApiSurface": [
+    "processExcelData(initialData) — parses uploaded Excel workbook into structured financial data",
+    "getStatements(bizInfo, overviewData, revenueData, costsData, expensesData) — computes income statement entries per month",
+    "getNPV(lifetime, cashflows, discountRate) — calculates Net Present Value",
+    "getIRR(lifetime, inflows, outflows, initialInv, precomputedNPV) — calculates Internal Rate of Return via bisection",
+    "getROI(inflows, outflows, initialInv) — calculates Return on Investment percentage",
+    "getBreakEven(lifetime, inflows, outflows, cashflows, initialInv) — calculates break-even period in years",
+    "createForecastStore() — creates Redux store for the sales forecasting simulator",
+    "createProjEvalStore() — creates Redux store for the project evaluation simulator",
+    "/home route — landing page",
+    "/mxrep/auth — authentication",
+    "/mxrep/registry — institution and user registration",
+    "/mxrep/:slug — institution dashboard (admin/professor/student panels)",
+    "/tecbooks — financial dashboard (requires Excel upload)",
+    "/sims/forecasting — sales forecast simulator",
+    "/sims/project-evaluation — investment evaluation simulator",
+    "/faq — help and FAQ"
+  ]
+}

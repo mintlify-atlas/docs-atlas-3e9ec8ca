@@ -1,0 +1,62 @@
+---
+title: "Get started with TecBooks"
+description: "Go from zero to analyzing your company's financial data in minutes — register your institution, set up a class, and upload your spreadsheet."
+---
+
+TecBooks is a financial and accounting education platform built for Tecnologico de Monterrey. It brings together a financial dashboard, interactive simulators, and classroom management tools so that professors and students can work with real business data in an academic setting. This guide walks you through the full setup flow — from registering your institution to exploring financial insights in the dashboard.
+
+## How TecBooks is organized
+
+The platform is divided into four main areas, each accessible at its own path:
+
+| Section | Path | Purpose |
+|---|---|---|
+| Home | `/home` | Landing page and platform entry point |
+| Institution portal | `/mxrep` | Registration, authentication, and institution-level management |
+| Financial dashboard | `/tecbooks` | Upload spreadsheets and analyze financial statements, health ratios, productivity, and forecasts |
+| Simulators | `/sims` | Run project evaluation and forecasting simulations |
+
+## Setup steps
+
+Follow these steps to go from a new account to an active class with students analyzing data.
+
+<Steps>
+  <Step title="Register your institution">
+    An institution admin creates the institution account at `/mxrep/registry/institution`. This generates a unique institution slug that professors and students use to access your portal at `/mxrep/<your-slug>`.
+  </Step>
+  <Step title="Register as a professor">
+    Professors sign up at `/mxrep/registry/professor` and are linked to an institution. The institution admin reviews and approves professor requests before access is granted.
+  </Step>
+  <Step title="Create a class and invite students">
+    Once approved, a professor can create a class and add students. Students receive an invitation and complete their own registration at `/mxrep/registry/student`.
+  </Step>
+  <Step title="Upload a business data spreadsheet">
+    Students (or professors) navigate to `/tecbooks/template-upload` and upload the TecBooks Excel template filled with their company's financial data. The platform parses the file and populates the dashboard automatically.
+  </Step>
+  <Step title="Analyze financial data">
+    With data loaded, users can explore the financial dashboard at `/tecbooks/dashboard` — reviewing income statements, balance sheets, cash flows, financial health ratios, productivity metrics, and forecasts.
+  </Step>
+</Steps>
+
+<Note>
+  The financial dashboard requires data to be submitted using the official TecBooks Excel template. Uploading a file in a different format or structure will result in parsing errors. Download the template from the upload page before filling in your data.
+</Note>
+
+## Next steps
+
+Use the cards below to continue setting up your institution or learn more about the platform's features.
+
+<CardGroup cols={2}>
+  <Card title="Register your institution" icon="building-2" href="/getting-started/register-institution">
+    Create an institution account and get your unique institution slug.
+  </Card>
+  <Card title="Register as a professor" icon="graduation-cap" href="/getting-started/register-professor">
+    Sign up as a professor and request access to your institution.
+  </Card>
+  <Card title="Register as a student" icon="user" href="/getting-started/register-student">
+    Join your institution's portal as a student and access your classes.
+  </Card>
+  <Card title="Uploading data" icon="file-spreadsheet" href="/features/dashboard/uploading-data">
+    Learn how to fill out and upload the TecBooks Excel template.
+  </Card>
+</CardGroup>

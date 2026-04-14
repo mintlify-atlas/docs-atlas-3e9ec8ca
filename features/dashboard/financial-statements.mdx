@@ -1,0 +1,88 @@
+---
+title: "Reading financial statements in TecBooks"
+description: "The Financial Statements section generates an Income Statement, Balance Sheet, and Statement of Cash Flows from your uploaded Excel data for any selected month."
+---
+
+The Financial Statements section of the TecBooks dashboard lets you read three standard accounting reports for any month in your uploaded dataset. All values are derived directly from the figures in your Excel workbook — no manual entry is required after the initial upload. Each statement displays the business name and selected period in the header, and each can be exported as a PDF report with a single button click.
+
+<Tip>
+  Financial statements are a key deliverable in the TecBooks classroom game. Use them to support your team's analysis, compare periods, and build the narrative behind your business performance before presenting to the professor.
+</Tip>
+
+## Navigating between statements
+
+The Statements view (`/tecbooks/statements`) displays one statement at a time. Use the left and right arrow buttons flanking the statement to cycle between the three available reports. The default view when you open the section is the **Income Statement**.
+
+## Statement types
+
+<AccordionGroup>
+  <Accordion title="Income Statement">
+    The Income Statement shows how revenue flows through costs and expenses to produce net income for the selected month. TecBooks computes every line from the data in your Overview sheet.
+
+    | Line item | Value |
+    |---|---|
+    | Net Sales | Revenue for the selected month |
+    | Cost of Goods Sold (COGS) | Costs for the selected month |
+    | **Gross Profit** | `Revenue − Costs` |
+    | Administrative Expenses | Expenses for the selected month |
+    | Depreciation | Depreciation for the selected month |
+    | Total Operating Expenses | `Expenses + Depreciation` |
+    | **Operating Profit (EBITDA)** | `Gross Profit − Expenses − Depreciation` |
+    | **Net Income** | Equal to Operating Profit |
+
+    All input values are treated as absolute (positive) numbers before the calculations are applied. The resulting gross profit, operating profit, and net income can be negative if costs and expenses exceed revenue.
+
+    Click **Generate PDF Report** to download a formatted A4 PDF of the Income Statement for the current period.
+  </Accordion>
+
+  <Accordion title="Balance Sheet">
+    The Balance Sheet presents a snapshot of your business's assets, liabilities, and equity for the selected month. It is organized into three sections:
+
+    **Assets**
+    - Current Assets: Cash and Banks, Customers, Accounts Receivable, and Inventory (Raw Material, Goods in Process, Finished Goods), summed into Total Current Assets.
+    - Fixed Assets: Buildings, Transportation, Machinery, Equipment, Net Accumulated Depreciation, and Others, summed into Total Fixed Assets.
+    - **Total Assets**
+
+    **Liabilities**
+    - Current Liabilities: Suppliers and Accounts Payable, summed into Total Current Liabilities.
+    - Long-Term Liabilities: Long-Term Accounts Payable, summed into Total Long-Term Liabilities.
+    - **Total Liabilities**
+
+    **Equity**
+    - Capital, Period Earnings, Retained Earnings, summed into Total Equity.
+    - **Liabilities + Equity** (must equal Total Assets for the sheet to balance)
+
+    Click **Generate PDF Report** to export the Balance Sheet for the current period.
+  </Accordion>
+
+  <Accordion title="Statement of Cash Flows">
+    The Statement of Cash Flows tracks how cash moved through your business during the selected month, broken into three activity categories.
+
+    **Cash Flow from Operating Activities**
+    - Net Income
+    - + Depreciation
+    - + Decrease in Accounts Receivable
+    - + Increase in Accounts Payable
+    - − Increase in Inventory
+    - = **Net Cash from Operating Activities**
+
+    **Cash Flow from Investing Activities**
+    - − Purchase of Property, Plant & Equipment
+    - + Proceeds from Sale of Equipment
+    - = **Net Cash from Investing Activities**
+
+    **Cash Flow from Financing Activities**
+    - + Proceeds from Issuing Debt
+    - − Repayment of Loans
+    - + Issuance of Equity
+    - − Dividends Paid
+    - = **Net Cash from Financing Activities**
+
+    **Summary**
+    - Net Change in Cash
+    - + Beginning Cash Balance
+    - = **Ending Cash Balance**
+
+    Click **Generate PDF Report** to export the Statement of Cash Flows for the current period.
+  </Accordion>
+</AccordionGroup>

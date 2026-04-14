@@ -1,122 +1,104 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "TecBooks",
+  "theme": "almond",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#f1d262",
+    "light": "#7c6c34",
+    "dark": "#19160b"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "https://icons.duckduckgo.com/ip3/babeljs.io.ico",
+  "logo": {
+    "light": "https://media.brand.dev/60a90780-779d-4b80-a52e-b7b5166da58e.png",
+    "dark": "https://media.brand.dev/60a90780-779d-4b80-a52e-b7b5166da58e.png"
+  },
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/famchiyaque/TecBooks_V2"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/famchiyaque/TecBooks_V2"
+    }
+  },
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Getting Started",
         "groups": [
           {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
+            "group": "Overview",
+            "pages": ["introduction", "getting-started/quickstart", "getting-started/roles"]
           },
           {
-            "group": "Customization",
+            "group": "Account Setup",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "getting-started/register-institution",
+              "getting-started/register-professor",
+              "getting-started/register-student"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "Features",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Financial Dashboard",
             "pages": [
-              "api-reference/introduction"
+              "features/dashboard/overview",
+              "features/dashboard/uploading-data",
+              "features/dashboard/financial-statements",
+              "features/dashboard/forecasts"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Simulators",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "features/simulators/sales-forecasting",
+              "features/simulators/project-evaluation"
+            ]
+          },
+          {
+            "group": "Classroom Management",
+            "pages": [
+              "features/classroom/managing-classes",
+              "features/classroom/creating-games",
+              "features/classroom/student-experience"
+            ]
+          },
+          {
+            "group": "Administration",
+            "pages": [
+              "features/admin/institution-overview",
+              "features/admin/managing-professors",
+              "features/admin/managing-students"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Reference",
+        "groups": [
+          {
+            "group": "Data & Calculations",
+            "pages": [
+              "reference/excel-template",
+              "reference/financial-calculations",
+              "reference/forecasting-methods"
+            ]
+          },
+          {
+            "group": "Deployment",
+            "pages": [
+              "reference/deployment",
+              "reference/faq"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+    ]
   }
 }

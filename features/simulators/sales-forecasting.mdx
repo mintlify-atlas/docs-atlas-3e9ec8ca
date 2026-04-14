@@ -1,0 +1,140 @@
+---
+title: "Sales Forecasting simulator in TecBooks"
+description: "Apply and compare six statistical forecasting methods — from moving averages to Winter's — on random, custom, or real uploaded sales data."
+---
+
+The Sales Forecasting simulator lets you explore how different time-series models behave against the same dataset. Load sales data from four sources, choose an aggregation interval, activate one or more statistical methods, and tune each method's parameters in real time. The chart updates immediately so you can compare model outputs side by side.
+
+The simulator is available at `/sims/forecasting`.
+
+## Data sources
+
+The simulator supports four ways to bring in sales data:
+
+| Source | Description |
+|--------|-------------|
+| `random` | Generates a dataset on page load using a randomly selected behavior and start date. Hit the randomize button at any time to get a new dataset. |
+| `custom` | Opens the data config popover where you pick a start date (between 1 and 20 years ago), a behavior category, and a specific pattern case. |
+| `real-world` | Loads a pre-bundled real-world dataset. |
+| `uploaded` | Drag and drop or select a file from your machine. Accepted formats: `.json`, `.csv`, and `.xlsx`. Maximum file size is 3 MB. |
+
+<Tip>
+Upload your own historical sales records to test how well each method fits real business data before applying it to future planning.
+</Tip>
+
+## Behavior patterns
+
+When using the `random` or `custom` source, the simulator generates data according to one of three behavior categories, each with specific cases:
+
+| Category | Cases |
+|----------|-------|
+| Stable | steady, gradual growth, gradual decline |
+| Seasonal | single peak, multiple peaks, seasonal + growth, seasonal + decline |
+| Irregular | occasional spikes, sudden drop & recovery, boom-and-bust, random walk |
+
+## Interval options
+
+Once data is loaded, the simulator detects its natural sampling frequency and makes only the appropriate intervals available. Coarser intervals are always available; finer ones are disabled if the data does not support them.
+
+| Value | Label |
+|-------|-------|
+| `daily` | Daily |
+| `weekly` | Weekly |
+| `monthly` | Monthly |
+| `yearly` | Yearly |
+
+The effective interval controls how many data points appear in the chart and sets the upper bound on the **compound** parameter for moving average methods.
+
+## Workflow
+
+<Steps>
+  <Step title="Choose a data source">
+    On page load, a random dataset is generated automatically. To switch sources, use the data config icon (custom or real-world) or the upload icon (`.json`, `.csv`, `.xlsx`) in the toolbar.
+  </Step>
+  <Step title="Select a behavior and pattern">
+    For `random` and `custom` sources, open the data config popover to pick a behavior category (stable, seasonal, or irregular) and a specific pattern case such as "gradual growth" or "boom-and-bust".
+  </Step>
+  <Step title="Choose an aggregation interval">
+    In the right-hand options panel, select an interval from the dropdown. Only intervals compatible with the loaded dataset's resolution are enabled.
+  </Step>
+  <Step title="Select forecasting methods">
+    Toggle one or more methods in the left-hand sidebar. Methods appear as chips; active methods are highlighted. You can activate multiple methods simultaneously to compare them on the same chart.
+  </Step>
+  <Step title="Configure method parameters">
+    The options panel exposes sliders for the parameters required by your active methods. Adjust compound, alpha, beta, and gamma as needed — the chart updates in real time.
+  </Step>
+  <Step title="View and interpret the chart">
+    The chart renders the historical series alongside each active method's forecast line. Use the timeline sliders to adjust how far into the past and future the chart extends.
+  </Step>
+</Steps>
+
+## Forecasting methods
+
+<AccordionGroup>
+  <Accordion title="Simple Moving Average">
+    Smooths the series by averaging the most recent *n* data points, where *n* is controlled by the **compound** parameter. Effective for stable, low-noise data with no trend.
+
+    **Parameter required:** `compound`
+
+    The compound value sets the window size. A smaller window reacts faster to recent changes; a larger window produces a smoother but more lagged forecast.
+  </Accordion>
+
+  <Accordion title="Double Moving Average">
+    Applies a second moving average on top of the first to account for a linear trend in the data. More responsive to trending series than Simple Moving Average.
+
+    **Parameter required:** `compound`
+
+    Both averages share the same window size set by the compound slider.
+  </Accordion>
+
+  <Accordion title="Simple Exponential Smoothing">
+    Assigns exponentially decreasing weights to past observations. More recent data points receive higher weight. Best suited for series without a consistent trend or seasonality.
+
+    **Parameter required:** `alpha` (α)
+
+    Alpha controls the smoothing factor (0–1). A value close to 1 makes the forecast highly responsive to the latest observation; a value close to 0 produces a heavily smoothed, slowly adapting forecast.
+  </Accordion>
+
+  <Accordion title="Double Exponential Smoothing">
+    Extends simple exponential smoothing to track a linear trend by maintaining separate smoothing equations for the level and the trend component.
+
+    **Parameters required:** `alpha` (α), `beta` (β)
+
+    Alpha smooths the level; beta smooths the trend estimate. Lower beta values make the trend component adapt more slowly.
+  </Accordion>
+
+  <Accordion title="Winter's method">
+    A triple exponential smoothing method that models level, trend, and seasonality simultaneously. Use this for data with clear seasonal patterns such as annual peaks or holiday spikes.
+
+    **Parameters required:** `alpha` (α), `beta` (β), `gamma` (γ)
+
+    Gamma controls the smoothing of the seasonal component. A value close to 1 updates the seasonal factors aggressively based on recent data.
+  </Accordion>
+
+  <Accordion title="Simple Linear Regression">
+    Fits a straight line through the historical data points using ordinary least squares. Produces a single linear trend forecast extending into the future.
+
+    **Parameters required:** none
+
+    This method is active by default when the simulator loads. It requires no tuning and serves as a useful baseline for comparing other methods.
+  </Accordion>
+
+  <Accordion title="Double Linear Regression">
+    A two-stage regression approach that applies a second linear regression to the residuals or trend component of the first fit, capturing more complex non-linear trend shapes in the data.
+
+    **Parameters required:** none
+
+    Like Simple Linear Regression, Double Linear Regression requires no parameter tuning. Use it when a single straight-line fit visibly underestimates or overestimates the trend direction.
+  </Accordion>
+</AccordionGroup>
+
+## Parameter reference
+
+| Parameter | Applies to | Range | Default |
+|-----------|-----------|-------|---------|
+| `compound` | Simple Moving Average, Double Moving Average | min 3, max = min(⌊data points × 0.7⌋, 100) | 3 |
+| `alpha` (α) | Simple Exponential Smoothing, Double Exponential Smoothing, Winter's | 0–1 | 0.5 |
+| `beta` (β) | Double Exponential Smoothing, Winter's | 0–1 | 0.5 |
+| `gamma` (γ) | Winter's | 0–1 | 0.5 |
+
+Simple Linear Regression and Double Linear Regression require no parameters and are always available regardless of other selections. The compound range is computed dynamically: its maximum is capped at 100 and also at 70% of the total number of data points for the selected interval.

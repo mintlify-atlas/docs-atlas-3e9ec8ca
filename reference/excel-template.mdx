@@ -1,0 +1,156 @@
+---
+title: "Excel workbook format for TecBooks upload"
+description: "Required structure for the five-sheet Excel workbook TecBooks parses on upload: exact sheet names, header row positions, and column layouts for all sheets."
+---
+
+TecBooks reads a specific Excel workbook layout to populate your dashboard with revenue, costs, expenses, depreciation, and accounts data. Every sheet name, header label, and cell position is fixed — deviating from the structure below will cause parsing to fail silently or produce wrong results.
+
+<Warning>
+Sheet names are case-sensitive. The parser looks for exactly: `Overview`, `Revenue`, `Costs`, `Expenses`, and `Accounts`. A sheet named `overview` or `REVENUE` will not be recognized.
+</Warning>
+
+## Workbook overview
+
+The workbook must contain five sheets. Each sheet is parsed independently; the sections below describe the required layout for each one.
+
+<AccordionGroup>
+
+  <Accordion title="Overview">
+
+The Overview sheet provides business metadata and the top-level monthly summary figures used to build income statements.
+
+**Fixed cells**
+
+| Cell (row, col) | Content |
+|---|---|
+| Row 0, Col 4 | Business name |
+| Row 0, Col 7 | Start month — either `YYYY-MM` string (e.g. `2025-01`) or an Excel serial date number |
+
+**Header row — Row 6**
+
+Row 6 must contain column labels. Labels are matched case-insensitively; their column position can vary. Required labels:
+
+| Label | Description |
+|---|---|
+| `Revenue` | Total monthly revenue |
+| `Costs` | Total monthly costs |
+| `Expenses` | Total monthly operating expenses |
+| `Depreciation` | Monthly depreciation charge |
+| `Total` | Overall monthly total |
+
+**Data rows — Row 7 onward**
+
+Each row represents one month. Column 1 of every data row must contain the month label (e.g. `January 2025`). These labels become the keys used throughout the rest of the dashboard.
+
+  </Accordion>
+
+  <Accordion title="Revenue">
+
+The Revenue sheet breaks total revenue down by individual product or service line.
+
+**Header row — Row 5**
+
+Row 5 contains column labels starting at column 2. The parser skips any column whose label is `Products` (case-insensitive). The last column must be labeled `Total`. All other column labels become product/service keys (lowercased).
+
+Example header row:
+
+```text
+[empty] [empty] Products  Widget A  Widget B  Consulting  Total
+```
+
+**Data rows — Row 6 onward**
+
+Each row is one month of data. Values are collected into per-product arrays aligned with the header columns.
+
+  </Accordion>
+
+  <Accordion title="Costs">
+
+The Costs sheet organizes cost data under three top-level categories. Categories are declared by their own header labels, and the columns that follow them belong to that category until the next category label appears.
+
+**Header/category row — Row 5, starting at column 5**
+
+The parser scans from column 5 onward. It recognizes four special labels (case-insensitive):
+
+| Label | Effect |
+|---|---|
+| `Salaries` | All subsequent sub-columns belong to the `salaries` category |
+| `Fixed Costs` | All subsequent sub-columns belong to the `fixedCosts` category |
+| `Variable Costs` | All subsequent sub-columns belong to the `variableCosts` category |
+| `Total` | Marks the single total column |
+
+Sub-column labels (e.g. `Employee #1`, `Cybersecurity`, `Raw Materials`) become keys under their parent category. Spaces in sub-column labels are replaced with underscores in the parsed output.
+
+Example layout:
+
+```text
+... Salaries  Emp_1  Emp_2  Fixed Costs  Rent  Utilities  Variable Costs  Materials  Total
+```
+
+**Data rows — Row 6 onward**
+
+  </Accordion>
+
+  <Accordion title="Expenses">
+
+The Expenses sheet follows the same category-then-sub-column pattern as Costs, but starts scanning at column 2 and has only two categories.
+
+**Header/category row — Row 5, starting at column 2**
+
+| Label | Effect |
+|---|---|
+| `Salaries` | All subsequent sub-columns belong to the `salaries` category |
+| `Expenses` | All subsequent sub-columns belong to the `expenses` category |
+| `Total` | Marks the single total column |
+
+Example layout:
+
+```text
+[empty] [empty] Salaries  Director  Manager  Expenses  Travel  Software  Total
+```
+
+**Data rows — Row 6 onward**
+
+  </Accordion>
+
+  <Accordion title="Accounts">
+
+The Accounts sheet tracks monthly payables and receivables, organized by sub-account name.
+
+**Header row — Row 6, starting at column 1**
+
+| Label | Effect |
+|---|---|
+| `Months` | Column is read as the month label array |
+| `Payable` or `Payables` | All subsequent sub-columns are payables accounts |
+| `Receivable` or `Receivables` | All subsequent sub-columns are receivables accounts |
+
+Sub-columns under each category label become named account arrays (e.g. `Supplier A`, `Client B`).
+
+**Data rows — Row 7 onward**
+
+<Tip>
+If your business has no payables or receivables, leave the Accounts sheet blank or place a cell in the header row containing both the word `disregard` and the words `no accounts`. The parser will detect this and skip the sheet gracefully, returning empty payables and receivables objects.
+</Tip>
+
+  </Accordion>
+
+</AccordionGroup>
+
+## Accepted date formats
+
+The start month value at row 0, col 7 accepts two formats:
+
+```text
+YYYY-MM          (e.g. "2025-01")
+Excel serial     (integer, e.g. 45657 — standard Excel date serial number)
+```
+
+Any other format is passed to the JavaScript `Date` constructor as a fallback; results may vary.
+
+## Common mistakes
+
+- Inserting blank rows above row 0 shifts all fixed cell positions.
+- Renaming category labels (e.g. `Fixed Cost` instead of `Fixed Costs`) causes those columns to be ignored.
+- Leaving the `Total` column out of the Revenue sheet means no totals array is populated.
+- Using merged cells in header rows — the parser reads individual cell values by column index.

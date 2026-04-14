@@ -1,0 +1,50 @@
+---
+title: "Add and manage professors at your institution"
+description: "Invite professors by email, review their registration requests from your inbox, and manage the details and permissions of your existing teaching staff."
+---
+
+Professors are added to your institution through a two-stage process: you send an invitation, and after the professor completes their registration, you review and approve the request from your inbox. Once approved, the professor gains full access to their panel and can begin creating classes and groups.
+
+## Adding a new professor
+
+<Steps>
+  <Step title="Open the Professors page">
+    In your admin panel, navigate to **Professors** at `/mxrep/<slug>/admin-panel/manage-professors`. This is also the default landing page for the admin panel.
+  </Step>
+  <Step title="Send an invitation">
+    Click **Invite Professor** in the top-right corner. On the invite form at `/mxrep/<slug>/admin-panel/invite-professor`, enter the professor's email address and any required details, then submit the form.
+
+    A confirmation message will appear once the invitation email has been sent. You can return to the professors list at any time using the back button.
+  </Step>
+  <Step title="Professor completes registration">
+    The invited professor receives an email with instructions to complete their account setup. Once they finish registration, a request is automatically sent to your inbox for review.
+  </Step>
+  <Step title="Review the request in your inbox">
+    Go to **Inbox** at `/mxrep/<slug>/admin-panel/inbox`. Pending professor registration requests appear as notification cards. Click a card to open the full request detail view at `/mxrep/<slug>/admin-panel/inbox/<requestId>`.
+
+    The request shows the professor's full name, email address, department (if provided), and the date the request was submitted.
+  </Step>
+  <Step title="Approve or decline the request">
+    From the request detail view, click **Approve** to grant the professor access to their panel, or **Decline** to reject the request. Both actions return you to the inbox automatically.
+  </Step>
+</Steps>
+
+<Tip>
+  Check your inbox regularly. New professor registration requests do not trigger a separate alert — they accumulate silently in the inbox. The inbox header shows a count of pending notifications so you can see at a glance how many requests await review.
+</Tip>
+
+<Warning>
+  Declining a professor request removes it from your inbox and prevents that registration from proceeding. The professor will not automatically be notified of the reason. If the rejection was made in error, you will need to send a new invitation so the professor can re-submit their registration.
+</Warning>
+
+## Managing existing professors
+
+The Professors page lists all approved professors at your institution. Each professor card links to their individual profile at `/mxrep/<slug>/admin-panel/manage-professors/<professorId>`.
+
+From a professor's profile you can:
+
+- **Edit their details** — update the professor's first name, last name, or email address using the Edit button. Changes are saved immediately on confirmation.
+- **Grant admin privileges** — if a professor should also have admin-level access to the institution panel, use the shield icon button to toggle their admin status.
+- **View activity stats** — the profile displays the number of classes, groups, and games associated with the professor when that data is available.
+
+The professor's account status is shown as a badge. A **Needs Finishing** badge means the professor has not yet completed their account setup (password configuration is still pending). An **Active** badge indicates their account is fully set up and operational.

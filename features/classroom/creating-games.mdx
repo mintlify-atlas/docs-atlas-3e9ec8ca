@@ -1,0 +1,90 @@
+---
+title: "Run financial analysis games for your class"
+description: "Set up a simulation game that gives student teams a shared financial scenario to analyze using the TecBooks dashboard, then track their progress."
+---
+
+A game in TecBooks is a structured financial analysis activity tied to one of your class groups. Each game configures the economic premises — initial capital, duration, order volumes, available products (Bills of Materials), and expense templates — that student teams receive as the starting conditions for their analysis. Teams use the TecBooks financial dashboard to work through the scenario and produce results that you can review and compare.
+
+Games move through four lifecycle states: **Draft** (configured but not yet visible to students), **Active** (open for student work), **Paused** (temporarily frozen), and **Completed** (closed and archived).
+
+## Creating a game
+
+<Steps>
+  <Step title="Open the professor panel">
+    Navigate to your institution's professor panel. Select **My Games** from the sidebar to see all your existing games and their current statuses.
+  </Step>
+  <Step title="Start a new game">
+    Click **New Game** in the top-right corner. The Create New Game form opens with three tabs: **Basic Info**, **Orders & Premises**, and **Templates**.
+  </Step>
+  <Step title="Configure basic information">
+    On the **Basic Info** tab, fill in the following fields:
+
+    | Field | Description |
+    |---|---|
+    | **Game Name** | A descriptive title for this activity. Minimum 3 characters. |
+    | **Description** | Explain what students will learn or analyze in this game. |
+    | **Group** | Select the class group that will participate. Only groups you own appear here. |
+
+    The group selection links the game to a specific set of enrolled students.
+  </Step>
+  <Step title="Set orders and premises">
+    Switch to the **Orders & Premises** tab to define the economic environment teams will operate in:
+
+    | Field | Description |
+    |---|---|
+    | **Initial Capital** | The starting budget allocated to each team, in pesos. Default: 1,000,000. |
+    | **Game Duration (Months)** | How many months the simulated period spans (1–12). |
+    | **Orders Per Year** | Total annual demand volume teams must plan around. |
+    | **Monthly Order Distribution** | Twelve percentage fields, one per month, that must sum to exactly 1.0. Use these to model seasonal demand patterns. |
+
+    <Warning>
+      The form will not allow submission if the monthly percentages do not sum to 1.0. Adjust the individual month values until the total indicator shows a checkmark before proceeding.
+    </Warning>
+  </Step>
+  <Step title="Select templates">
+    On the **Templates** tab, choose the products and expenses available to teams during the game:
+
+    - **Bill of Materials (BOMs)** — product templates that define what teams can manufacture or sell, including selling prices.
+    - **Expenses** — recurring cost templates such as rent, salaries, or utilities, shown with their monthly cost.
+
+    Select as many or as few as needed for the scenario you want to present. Unselected templates are not visible to student teams.
+  </Step>
+  <Step title="Create and activate the game">
+    Click **Create Game**. The game is saved in **Draft** status. Open it from the My Games list and click **Activate** when you are ready for students to begin. You can also **Pause** an active game to freeze it temporarily, or **Complete** it to close submissions permanently.
+  </Step>
+</Steps>
+
+## Managing teams within a game
+
+After a game is created, the game detail view gives you four tabs: **Overview**, **Configurations**, **Teams**, and **Students**.
+
+Use the **Teams** tab to organize students into named sub-teams within the game:
+
+1. Click **Create Team** and enter a team name.
+2. Select students from the group's enrollment list to add to the team.
+3. Save the team. Each student can belong to only one team per game.
+
+The **Students** tab shows every enrolled student in the group alongside their current team assignment. Students not yet assigned appear as "Not assigned".
+
+<Note>
+  Games pull students from the group you selected at creation. If a student is not appearing in the Students tab, confirm they are enrolled in the correct group under **My Groups**.
+</Note>
+
+## Tracking progress
+
+From the game detail overview you can see at a glance how many teams and students are participating, and how many simulation runs have been executed. Use the **Configurations** tab to review the full economic setup that was applied — including BOMs, expenses, assets, employees, materials, and processes — without needing to re-open the creation form.
+
+<Tip>
+  The Forecasts section of the TecBooks financial dashboard includes a leaderboard view that lets you compare student team submissions side by side. Use it after students have completed their runs to facilitate class discussion around differing strategies and outcomes.
+</Tip>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Manage classes and groups" icon="book-open" href="/features/classroom/managing-classes">
+    Review how classes and groups are structured, and make sure your groups are set up before creating games.
+  </Card>
+  <Card title="Student experience" icon="graduation-cap" href="/features/classroom/student-experience">
+    Walk through what students see when they join a game and work through the financial dashboard.
+  </Card>
+</CardGroup>

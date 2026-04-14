@@ -1,0 +1,94 @@
+---
+title: "Upload your business spreadsheet to TecBooks"
+description: "Learn how to prepare and upload the required Excel workbook so TecBooks can parse your business data and activate the Financial Dashboard."
+---
+
+Before you can use the Financial Dashboard, you need to upload an Excel workbook that contains your business data. TecBooks reads five specific sheets from the workbook, extracts financial figures month by month, and passes everything into the dashboard as soon as the file is processed. No data is stored server-side — the workbook is parsed entirely in the browser.
+
+<Warning>
+  Sheet names are case-sensitive. Your workbook must contain sheets named exactly `Overview`, `Revenue`, `Costs`, `Expenses`, and `Accounts`. Any deviation in capitalization or spelling will cause that sheet's data to be skipped.
+</Warning>
+
+## Upload steps
+
+<Steps>
+  <Step title="Navigate to the upload page">
+    Go to `/tecbooks` in your TecBooks instance. You will see the **Upload your Business Data Spreadsheet** page with a drag-and-drop zone.
+  </Step>
+  <Step title="Select or drop your Excel file">
+    Either drag your `.xlsx` file directly onto the drop zone, or click inside it to open a file picker. Only Excel workbooks are accepted.
+  </Step>
+  <Step title="Wait for parsing to complete">
+    TecBooks reads each of the five required sheets, extracts all financial data, and computes derived values such as statements and forecast inputs. This happens in your browser and usually takes under a second.
+  </Step>
+  <Step title="Explore the dashboard">
+    Once parsing is complete, you are automatically redirected to the **Overview** tab of the Financial Dashboard at `/tecbooks/overview`. All three dashboard sections — Overview, Financial Statements, and Forecasts — are now active.
+  </Step>
+</Steps>
+
+<Tip>
+  Fill in as many months and line items as you can in each sheet. The more complete your data, the more accurate the charts, statements, and forecast projections will be.
+</Tip>
+
+## Required sheet structure
+
+Your workbook must contain exactly five sheets with the names and column layouts described below.
+
+<AccordionGroup>
+  <Accordion title="Overview sheet">
+    The Overview sheet is the master sheet. It provides business metadata and the summarized monthly figures that drive the top-level cards and charts.
+
+    | Location | Content |
+    |---|---|
+    | Row 1, column 5 (index 4) | Business name |
+    | Row 1, column 8 (index 7) | Start month — accepted as an Excel serial date or a `YYYY-MM` string |
+    | Row 7 (index 6) | Header row with column labels: `Revenue`, `Costs`, `Expenses`, `Depreciation`, `Total` |
+    | Row 8 onward (index 7+) | Monthly data rows — one row per month, values in the columns identified by the header row |
+
+    Column detection is case-insensitive and trims whitespace, so `revenue`, `Revenue`, and `REVENUE` are all recognized.
+  </Accordion>
+
+  <Accordion title="Revenue sheet">
+    The Revenue sheet holds monthly revenue broken down by individual product or service.
+
+    | Location | Content |
+    |---|---|
+    | Row 6 (index 5) | Header row — first meaningful label is `Products`, followed by individual product or service names, then `Total` |
+    | Row 7 onward (index 6+) | Monthly data rows — one row per month, one column per product/service, plus a `Total` column |
+
+    TecBooks builds a map of every column whose header is neither `Products` nor `Total` and treats each one as a separate product or service. This data drives the Sales by Product/Service area chart on the Overview tab.
+  </Accordion>
+
+  <Accordion title="Costs sheet">
+    The Costs sheet groups monthly cost data into three categories: Salaries, Fixed Costs, and Variable Costs.
+
+    | Location | Content |
+    |---|---|
+    | Row 6 (index 5) | Header row with category markers `Salaries`, `Fixed Costs`, `Variable Costs`, and `Total`, followed by individual sub-column names within each category |
+    | Row 7 onward (index 6+) | Monthly data rows |
+
+    The parser reads left to right and assigns each sub-column to the most recently encountered category label. You can have any number of sub-columns under each category — for example, individual employee names under `Salaries` or specific cost line items under `Fixed Costs` and `Variable Costs`.
+  </Accordion>
+
+  <Accordion title="Expenses sheet">
+    The Expenses sheet records operating expenses grouped into Salaries and Expenses.
+
+    | Location | Content |
+    |---|---|
+    | Row 6 (index 5) | Header row with category markers `Salaries`, `Expenses`, and `Total`, followed by individual sub-column names |
+    | Row 7 onward (index 6+) | Monthly data rows |
+
+    Like the Costs sheet, any number of named sub-columns can appear under each category. The parser assigns them to `Salaries` or `Expenses` based on which category label was most recently encountered.
+  </Accordion>
+
+  <Accordion title="Accounts sheet">
+    The Accounts sheet tracks monthly payables and receivables sub-accounts.
+
+    | Location | Content |
+    |---|---|
+    | Row 7 (index 6) | Header row with `Months`, then `Payables` (or `Payable`) as a section marker, then individual payable account names, then `Receivables` (or `Receivable`) as a section marker, then individual receivable account names |
+    | Row 8 onward (index 7+) | Monthly data rows — one row per month |
+
+    If your business has no accounts to track, you can mark the header row with the text `disregard` and `no accounts` anywhere in a single cell. TecBooks will detect this and skip the sheet without raising an error, returning empty payables and receivables objects instead.
+  </Accordion>
+</AccordionGroup>

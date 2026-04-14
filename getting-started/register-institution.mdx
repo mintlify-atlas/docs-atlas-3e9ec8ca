@@ -1,0 +1,87 @@
+---
+title: "Register your institution on TecBooks"
+description: "Learn how to submit an institution registration request on TecBooks, choose your institution slug, and get your professors and students set up."
+---
+
+TecBooks is organized around institutions. Before any professor or student can log in, an institution must exist on the platform. This guide walks you through submitting a registration request as the designated admin or founding professor of your institution, and explains what happens after your request is reviewed.
+
+## What you'll need
+
+Before you begin, have the following ready:
+
+- Your institution's official name
+- A short, URL-friendly slug (e.g., `tec-monterrey`)
+- Your institution's primary email domain (e.g., `tec.mx`)
+- A contact email address and phone number
+- Your city and country
+
+<Steps>
+  <Step title="Navigate to the registry">
+    Go to `/mxrep/registry`. On the "Choose your user type" screen, click the **Institution** card to open the Institution Registry form.
+  </Step>
+
+  <Step title="Fill in institution details">
+    Complete the **Institution Information** section:
+
+    | Field | Description |
+    |---|---|
+    | **Institution Name** | The full official name of your institution. |
+    | **Slug** | A URL-friendly identifier, all lowercase with hyphens (e.g., `tec-monterrey`). This becomes part of every user's URL after approval. |
+    | **Domain** | Your institution's email domain without `@` (e.g., `tec.mx`). Used to validate institutional email addresses. |
+    | **Country** | The country where your institution is based. |
+    | **City** | The city where your institution is based. |
+    | **Phone Number** | A primary contact number for your institution. |
+    | **Contact Email** | The main institutional contact email address. |
+  </Step>
+
+  <Step title="Fill in your personal details">
+    Complete the **Your Information** section:
+
+    | Field | Description |
+    |---|---|
+    | **Role** | Select **Admin** if you will manage the institution, or **Professor** if another person will act as admin later. |
+    | **Your Email** | Your institutional email address. |
+    | **First Name(s)** | Your given name(s). |
+    | **Last Name(s)** | Your family name(s). |
+    | **Department** | (Visible when **Professor** is selected) The academic department you belong to. |
+  </Step>
+
+  <Step title="Submit for review">
+    Click **Submit Request**. If the submission is successful, a confirmation message appears and an email is sent to the TecBooks super-admin for review. You will be notified at your contact email once the request has been processed.
+  </Step>
+
+  <Step title="Super-admin approves the request">
+    A TecBooks super-admin reviews your request. They may approve or decline it. You will receive an email notification with the outcome.
+  </Step>
+
+  <Step title="Access your institution space">
+    Once approved, your institution's space is created and accessible at:
+
+    ```
+    /mxrep/<your-slug>
+    ```
+
+    For example, if your slug is `tec-monterrey`, your institution's base URL is `/mxrep/tec-monterrey`. All panels, dashboards, and classroom tools for your professors and students will live under this path.
+  </Step>
+</Steps>
+
+<Note>
+  The approval process is manual and performed by a TecBooks super-admin. There is no guaranteed turnaround time. If you have not received a response within a reasonable period, contact your TecBooks account representative.
+</Note>
+
+<Info>
+  The **slug** you choose becomes a permanent part of every URL in your institution's space (e.g., `/mxrep/tec-monterrey/admin-panel`). Share this slug with your professors and students — they will need it to select your institution when registering their own accounts. Choose something short, recognizable, and consistent with your institution's branding. The slug cannot contain spaces or special characters other than hyphens.
+</Info>
+
+## Next steps
+
+After your institution is approved, invite professors to register and begin setting up their classrooms.
+
+<CardGroup cols={2}>
+  <Card title="Register a professor" icon="graduation-cap" href="/getting-started/register-professor">
+    Guide professors through requesting an account under your institution.
+  </Card>
+  <Card title="Register a student" icon="user" href="/getting-started/register-student">
+    Guide students through creating their accounts and joining a class.
+  </Card>
+</CardGroup>

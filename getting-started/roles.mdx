@@ -1,0 +1,95 @@
+---
+title: "Understanding user roles in TecBooks"
+description: "TecBooks has four roles — student, professor, institution admin, and super admin — each with different levels of access and responsibility."
+---
+
+TecBooks uses a role-based access model to keep classroom management, institution administration, and platform operations clearly separated. When you register, you are assigned a role that determines what you can see and do inside the platform. This page describes each role and the specific actions available to it.
+
+<Info>
+  Students and professors access TecBooks through their institution's dedicated URL at `/mxrep/<institution-slug>`. You will need your institution's slug before you can log in or register as either role.
+</Info>
+
+## Roles at a glance
+
+<CardGroup cols={2}>
+  <Card title="Student" icon="user">
+    Joins classes and games, accesses the financial dashboard and simulators, and manages their own profile.
+  </Card>
+  <Card title="Professor" icon="graduation-cap">
+    Creates and manages classes, games, and groups, invites students, and accesses all learning tools.
+  </Card>
+  <Card title="Institution admin" icon="building-2">
+    Manages professors and students within the institution and maintains the institution profile.
+  </Card>
+  <Card title="Super admin" icon="shield">
+    Oversees the entire platform, manages institution accounts, and handles platform-wide administration.
+  </Card>
+</CardGroup>
+
+## Role permissions
+
+<AccordionGroup>
+  <Accordion title="Student" icon="user">
+    Students interact with the platform through their institution's portal and the shared learning tools.
+
+    | Area | Actions |
+    |---|---|
+    | Games | Join games created by a professor |
+    | Games | View joined games and game history |
+    | Inbox | View messages and notifications |
+    | Profile | View and update personal profile |
+    | Financial dashboard | Upload the TecBooks Excel template and explore statements, health ratios, productivity metrics, and forecasts at `/tecbooks/dashboard` |
+    | Simulators | Run project evaluation and forecasting simulations at `/sims` |
+  </Accordion>
+
+  <Accordion title="Professor" icon="graduation-cap">
+    Professors have full control over their classroom environment and access to all analytical tools.
+
+    | Area | Actions |
+    |---|---|
+    | Classes | Create new classes |
+    | Classes | View and manage existing classes |
+    | Games | Create games for students |
+    | Games | View and manage created games |
+    | Groups | Create groups within a class |
+    | Groups | View and manage existing groups |
+    | Students | Invite students to classes |
+    | Inbox | View messages and notifications |
+    | Profile | View and update personal profile |
+    | Financial dashboard | Upload data and use the full dashboard at `/tecbooks/dashboard` |
+    | Simulators | Run project evaluation and forecasting simulations at `/sims` |
+  </Accordion>
+
+  <Accordion title="Institution admin" icon="building-2">
+    Institution admins manage the people in their institution but do not have access to classroom or simulation tools.
+
+    | Area | Actions |
+    |---|---|
+    | Professors | Invite professors to join the institution |
+    | Professors | Review incoming professor registration requests |
+    | Professors | View and manage existing professors |
+    | Students | View and manage students enrolled in the institution |
+    | Inbox | View messages and notifications |
+    | Profile | View and update the institution's profile |
+  </Accordion>
+
+  <Accordion title="Super admin" icon="shield">
+    Super admins operate at the platform level and are responsible for the overall health of TecBooks.
+
+    | Area | Actions |
+    |---|---|
+    | Institutions | Review and approve institution registration requests |
+    | Institutions | View and manage all institutions on the platform |
+    | Inbox | View platform-wide messages and notifications |
+    | Profile | View and update super admin profile |
+  </Accordion>
+</AccordionGroup>
+
+## Choosing the right role
+
+If you are unsure which role applies to you, use this as a guide:
+
+- **Register as a student** if you are taking a course and your professor has given you an institution slug.
+- **Register as a professor** if you are teaching a course and your institution is already on TecBooks.
+- **Contact your institution's admin** if you need help getting access or locating your institution slug.
+- **Register as an institution** if your school or organization is not yet on the platform.

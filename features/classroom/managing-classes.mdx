@@ -1,0 +1,75 @@
+---
+title: "Create and manage classes as a professor"
+description: "Learn how to create classes, organize student groups by semester and period, and invite students to your TecBooks professor panel."
+---
+
+The professor panel gives you a dedicated workspace for organizing your courses on TecBooks. A **class** represents a course or cohort — for example, "Financial Analysis II" with code `FIN-402`. Within each class you create one or more **groups** that correspond to a specific semester and period, and it is those groups that students are enrolled in and that games are assigned to.
+
+## Classes and groups
+
+Understanding the two-level structure helps you plan your setup before creating anything.
+
+- **Class** — the course itself, identified by a name and a short code (e.g., `FIN-402`). A class persists across semesters and can contain many groups.
+- **Group** — a sub-cohort of a class tied to a specific semester and period (e.g., "Group A — Spring 2026"). Games are assigned to groups, not directly to classes. Groups also have their own code for quick identification.
+
+<Tip>
+  Create and populate your groups before launching any games. The game creation form requires you to select an existing group, so having your groups ready first avoids interrupting the setup flow.
+</Tip>
+
+## Creating a class
+
+<Steps>
+  <Step title="Open the professor panel">
+    Log in to TecBooks and navigate to your institution's professor panel at `/mxrep/{institution-slug}/professor-panel`. The panel sidebar gives you access to all classroom management features.
+  </Step>
+  <Step title="Go to My Classes">
+    Select **My Classes** from the sidebar. The page lists all your existing classes with their codes, creation dates, and the number of groups each one contains. Click **New Class** in the top-right corner.
+  </Step>
+  <Step title="Fill in the class details">
+    Complete the Create New Class form with the following fields:
+
+    | Field | Description |
+    |---|---|
+    | **Class Name** | Full name of the course, e.g., "Financial Analysis II". Minimum 3 characters. |
+    | **Class Code** | Short alphanumeric identifier, e.g., `FIN-402`. Minimum 2 characters. |
+    | **Description** | Optional summary of the course objectives or content. |
+
+    Click **Create Class** to save. You are returned to the My Classes list where your new class appears immediately.
+  </Step>
+  <Step title="Add student groups">
+    Open the class you just created and click **New Group**, or navigate to **My Groups** in the sidebar and click **New Group** there. Complete the Create New Group form:
+
+    | Field | Description |
+    |---|---|
+    | **Class** | Select the parent class from the dropdown. |
+    | **Group Name** | Descriptive name, e.g., "Group A". Minimum 3 characters. |
+    | **Group Code** | Short identifier, e.g., `FIN-G1`. Minimum 2 characters. |
+    | **Description** | Optional notes about this group's semester or period. |
+
+    Repeat for each group (section or period) of the course.
+  </Step>
+  <Step title="Invite students">
+    Share the group code with your students so they can register and join the correct group. Students use the code during their registration or from the Join Game flow once they are enrolled.
+  </Step>
+</Steps>
+
+## Managing existing classes and groups
+
+The **My Classes** page displays all your classes in a card grid. Each card shows the class name, code, creation date, and group count. Click any card to open the class detail view where you can manage its groups directly.
+
+The **My Groups** page lists all groups across all your classes, sorted by most recently created. Use the **Current / All** toggle to filter between active-semester groups and your complete history. Click any group card to view its students, edit details, or use it as the target when creating a new game.
+
+<Note>
+  Group status is managed automatically. Groups marked as `active` or `current` appear in the **Current** filter; past groups are hidden by default but remain accessible under **All**.
+</Note>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Run financial analysis games" icon="gamepad-2" href="/features/classroom/creating-games">
+    Create a simulation game and assign it to one of your groups so students can begin their financial analysis activity.
+  </Card>
+  <Card title="Student experience" icon="graduation-cap" href="/features/classroom/student-experience">
+    See exactly what your students see from login through game completion, including the inbox, join flow, and My Games dashboard.
+  </Card>
+</CardGroup>

@@ -1,0 +1,158 @@
+---
+title: "Project Evaluation simulator in TecBooks"
+description: "Compute NPV, IRR, ROI, and break-even for multi-year investment projects, then compare results across saved scenarios in the history panel."
+---
+
+The Project Evaluation simulator calculates four standard investment metrics — Net Present Value, Internal Rate of Return, Return on Investment, and break-even period — from the yearly cash flows you provide. Results update instantly as you edit inputs, and you can record multiple projects to the history panel and compare them side by side.
+
+The simulator is available at `/sims/project-evaluation`.
+
+## Inputs
+
+The simulator takes the following inputs for each project:
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| Project name | string | `production line` | Label used to identify the project in the history panel. |
+| Lifetime | integer (years) | `5` | Number of years over which cash flows are projected. Increasing lifetime adds a new column to the inflows and outflows table. |
+| Initial investment | number | `4000` | One-time capital outlay applied at the start of year 0 (period 0). |
+| Discount rate | number (%) | `8.0` | The rate used to discount future cash flows to present value. |
+| Inflows | array (one value per year) | `[500, 2000, 6000, 15000, 30000]` | Revenue or income expected in each year of the project's lifetime. |
+| Outflows | array (one value per year) | `[3000, 4500, 5000, 7200, 12000]` | Operating costs or expenditures in each year. |
+
+<Info>
+You can copy inflows and outflows to your clipboard as JSON and paste them into another project using the copy/paste buttons in the input section.
+</Info>
+
+## Cash flow calculation
+
+The simulator derives a cash flow series from your inputs before computing any metric:
+
+```
+cashflow[0] = inflow[0] - outflow[0] - initialInvestment
+cashflow[t] = inflow[t] - outflow[t]           (for t = 1 … lifetime - 1)
+```
+
+The initial investment is subtracted only at period 0, reducing the first-year net cash flow to account for the upfront capital cost.
+
+## Workflow
+
+<Steps>
+  <Step title="Enter project details">
+    Type a project name, set the lifetime in years, and provide the discount rate. The inflows and outflows table resizes automatically when the lifetime changes.
+  </Step>
+  <Step title="Set the initial investment">
+    Enter the upfront capital outlay. This value is deducted from the period-0 cash flow before any discounting takes place.
+  </Step>
+  <Step title="Enter yearly inflows and outflows">
+    Fill in the inflows and outflows table column by column. Use the add/remove year buttons to extend or shorten the timeline, and use copy/paste to transfer flow data between projects.
+  </Step>
+  <Step title="View computed metrics">
+    The results panel on the right updates in real time showing NPV, IRR, ROI, and break-even. A thumbs-up or thumbs-down indicator appears based on whether the IRR exceeds the discount rate.
+  </Step>
+  <Step title="Save the project to history">
+    Click **Record Project** to save the current inputs and results to the session history (up to 15 entries). The history panel lists all saved projects with their key metrics.
+  </Step>
+  <Step title="Compare projects in the history panel">
+    Click any row in the history table to reload that project's inputs and results into the simulator for review or editing. Remove individual entries with the clear button or wipe all history at once.
+  </Step>
+</Steps>
+
+## Computed metrics
+
+<AccordionGroup>
+  <Accordion title="NPV — Net Present Value">
+    Sums the present value of all cash flows discounted at the given rate. A positive NPV means the project returns more than the cost of capital; a negative NPV means it destroys value at the given discount rate.
+
+    **Formula:**
+
+    ```
+    NPV = Σ cashflow[t] / (1 + rate/100)^t     for t = 0 … lifetime - 1
+    ```
+
+    The result is displayed in currency units (rounded to two decimal places). The NPV label turns green when positive and red when negative.
+  </Accordion>
+
+  <Accordion title="IRR — Internal Rate of Return">
+    The discount rate at which the project's NPV equals zero — that is, the rate of return the project earns on invested capital. A project is generally considered acceptable when the IRR exceeds the discount rate.
+
+    **Algorithm:** bisection search over 1,000 iterations with a convergence tolerance of 0.01.
+
+    The search boundary is set dynamically based on the pre-computed NPV:
+
+    - If NPV > 0: search range is 0% to 200%
+    - If NPV < 0: search range is -100% to 0%
+    - If |NPV| < 0.01: IRR is returned as 0%
+
+    ```
+    At each iteration:
+      guessRate = (lowRate + highRate) / 2
+      npv = Σ (inflow[t] - outflow[t]) / (1 + guessRate/100)^t - initialInvestment
+      if npv > 0 → lowRate = guessRate
+      if npv < 0 → highRate = guessRate
+    ```
+
+    The result is displayed as a percentage (rounded to one decimal place).
+  </Accordion>
+
+  <Accordion title="ROI — Return on Investment">
+    A percentage expressing total net gain relative to total costs. Unlike NPV and IRR, ROI does not discount future cash flows.
+
+    **Formula:**
+
+    ```
+    total_inflows = sum of all inflow[t]
+    total_costs   = sum of all outflow[t] + initialInvestment
+    ROI           = ((total_inflows - total_costs) / total_costs) × 100
+    ```
+
+    The result is displayed as a percentage (rounded to two decimal places).
+  </Accordion>
+
+  <Accordion title="Break-even period">
+    The point in time (in years) when accumulated net cash flows first reach zero — that is, when the project has recovered its total investment.
+
+    **Algorithm:**
+
+    If the first period's cash flow is already non-negative (the project is profitable from day one):
+
+    ```
+    break-even = (outflow[0] + initialInvestment) / inflow[0]
+    ```
+
+    Otherwise, the simulator accumulates cash flows year by year:
+
+    ```
+    accumulated = 0
+    for i = 0 … lifetime - 1:
+        accumulated += cashflow[i]
+        if accumulated >= 0:
+            break-even = i + |outflow[i-1] / inflow[i]|
+            return break-even
+    ```
+
+    The result is displayed in years (rounded to one decimal place).
+
+    <Note>
+      If accumulated cash flows never reach zero within the project's lifetime, break-even returns `null` and the simulator displays **X** in the results panel. This means the project does not recover its investment within the defined horizon.
+    </Note>
+  </Accordion>
+</AccordionGroup>
+
+## Project history
+
+Results are saved to `sessionStorage` under the key `"projEvalHistory"`. The session is limited to **15 saved projects**. History is cleared when the browser tab is closed.
+
+<Tip>
+Save multiple scenarios — for example, an optimistic and a conservative cash flow estimate — and click between history rows to compare how the NPV, IRR, ROI, and break-even change across assumptions.
+</Tip>
+
+The history panel displays the following columns for each saved project:
+
+| Column | Description |
+|--------|-------------|
+| Name | Project name entered in the input section. |
+| BE | Break-even period in years, or X if not reached. |
+| ROI | Return on investment as a percentage. |
+| NPV | Net present value in currency units. |
+| IRR | Internal rate of return as a percentage. |

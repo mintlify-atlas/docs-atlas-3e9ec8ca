@@ -1,0 +1,53 @@
+---
+title: "Financial forecasts in the TecBooks dashboard"
+description: "The Forecasts tab in the Financial Dashboard applies statistical models to your uploaded revenue data and ranks their projections on an interactive leaderboard."
+---
+
+The Forecasts section of the TecBooks Financial Dashboard (`/tecbooks/forecasts`) is a built-in analytical tool that uses the revenue data from your uploaded Excel workbook to generate and compare forward-looking projections. Unlike the standalone Forecasting Simulator, which runs independently of any spreadsheet, this view is always tied to the business data you uploaded — it reflects your actual products, services, and historical figures.
+
+<Note>
+  This page documents the **Forecasts tab inside the Financial Dashboard**, which requires an uploaded workbook and operates on your real business data. It is a different tool from the standalone `/sims/forecasting` simulator, which is used for general-purpose what-if analyses without needing a spreadsheet. See the links at the bottom of this page for more detail.
+</Note>
+
+## How it works
+
+When you open the Forecasts tab, TecBooks reads the revenue data from your uploaded workbook and generates a time-series data array spanning a configurable past window and future projection window. You then choose one or more forecasting methods, and the dashboard overlays each method's projection as a dashed line on the same interactive graph.
+
+## Forecast methods
+
+Seven statistical methods are available. You can activate any combination simultaneously to compare them side by side on the graph.
+
+| Method | Description |
+|---|---|
+| **SMA** | Simple Moving Average — averages the last _n_ data points to project the next value |
+| **DMA** | Double Moving Average — applies a second moving average over the first SMA series to reduce lag |
+| **SES** | Simple Exponential Smoothing — weights recent observations more heavily using a smoothing factor α |
+| **DES** | Double Exponential Smoothing — extends SES to handle trends in the data |
+| **Winter's** | Triple Exponential Smoothing — accounts for trend and seasonality patterns |
+| **SLR** | Simple Linear Regression — fits a straight line through historical data points and extends it forward |
+| **DLR** | Double Linear Regression — a two-stage regression approach for more complex trend modeling |
+
+## Configuring the view
+
+The Forecasts tab exposes several controls that let you customize what is shown on the graph:
+
+- **Based On / Forecast For** — two sliders that set how far back into history the graph reads and how far into the future it projects. Options range from the current month to the start of the uploaded dataset (past) and from the current month to the next calendar year (future).
+- **Interval** — controls the granularity of data points on the x-axis: daily, weekly, biweekly, or monthly.
+- **Smoothing** — a 1–10 vertical slider that controls the degree of smoothing applied to moving-average methods.
+- **Alpha (α)** — sets the exponential smoothing factor for methods such as SES, ranging from 0 (most heavily smoothed) to 1 (most reactive to recent data).
+- **Data type** — toggles the underlying metric being forecast between **Sales** (revenue in USD), **Orders** (transaction count), and **Demand** (units sold).
+
+## Forecast leaderboard
+
+The leaderboard panel ranks every active forecast method by its projected total volume over the selected future window. Methods are sorted from highest to lowest projected figure, and each entry is color-coded to match its line on the graph. In a classroom context, teams can use the leaderboard to identify which method produces the most optimistic or conservative outlook and justify their choice in their analysis presentation.
+
+## Related pages
+
+<CardGroup cols={2}>
+  <Card title="Standalone forecasting simulator" icon="flask" href="/features/simulators/sales-forecasting">
+    The `/sims/forecasting` simulator lets you run the same statistical methods without uploading a business spreadsheet — useful for standalone what-if exercises and classroom demos.
+  </Card>
+  <Card title="Financial statements" icon="file-invoice-dollar" href="/features/dashboard/financial-statements">
+    View the Income Statement, Balance Sheet, and Statement of Cash Flows generated from the same uploaded workbook.
+  </Card>
+</CardGroup>
